@@ -1,0 +1,6 @@
+ChangeLog
+MANIFEST
+Makefile.PL
+lib/XML/Compile/Tester.pm
+t/01use.t
+t/pod.t
