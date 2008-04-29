@@ -4,6 +4,14 @@
 Unless noted otherwise, these changes where initiated and applied by
 Mark Overmeer.
 
+version 0.02: Tue Apr 29 19:01:14 CEST 2008
+
+	Improvements:
+
+	- does not depend on XML::Compile.
+
+	- Add ChangeLog file to package.
+
 version 0.01: Mon Apr 21 17:09:08 CEST 2008
 
 	- initial implementation, derived from XML::Compile file
