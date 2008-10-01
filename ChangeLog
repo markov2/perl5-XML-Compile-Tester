@@ -4,6 +4,16 @@
 Unless noted otherwise, these changes where initiated and applied by
 Mark Overmeer.
 
+version 0.03: Wed Oct  1 09:50:53 CEST 2008
+
+	Changes:
+
+	- create_reader --> reader_create, create_writer --> writer_create
+
+	Improvements:
+
+	- much more documentation.
+
 version 0.02: Tue Apr 29 19:01:14 CEST 2008
 
 	Improvements:
