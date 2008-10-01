@@ -4,6 +4,12 @@
 Unless noted otherwise, these changes where initiated and applied by
 Mark Overmeer.
 
+version 0.04: Wed Oct  1 22:12:59 CEST 2008
+
+	Fixes:
+
+	- dependency with XML::Compile::Util.  [cpantesters]
+
 version 0.03: Wed Oct  1 09:50:53 CEST 2008
 
 	Changes:

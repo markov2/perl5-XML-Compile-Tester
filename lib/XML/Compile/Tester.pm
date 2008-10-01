@@ -21,7 +21,6 @@ our @EXPORT = qw/
 use Test::More;
 use Data::Dumper;
 use Log::Report        qw/try/;
-use XML::Compile::Util qw/pack_type/;
 
 my $default_namespace;
 my @compile_defaults;
@@ -90,9 +89,8 @@ and with the OPTIONS parameter list.
 
 =cut
 
-sub _reltype_to_abs($)
-{   $_[0] =~ m/\{/ ? $_[0] : pack_type($default_namespace, $_[0]);
-}
+# not using pack_type, which avoids a recursive dependency to XML::Compile
+sub _reltype_to_abs($) { $_[0] =~ m/\{/ ? $_[0] : "{$default_namespace}$_[0]" }
 
 sub reader_create($$$@)
 {   my ($schema, $test, $reltype) = splice @_, 0, 3;
