@@ -37,9 +37,10 @@ XML::Compile::Tester - support XML::Compile related regression testing
  set_compile_defaults();  # reset
 
  # set default namespace, such that $type only needs to use local
+ my $ns     = 'some-schemas-targetNamespace';
  my $type   = pack_type($ns, 'localName'); # X::C::Util
  set_default_namespace($ns);
- my $type   = 'localName';
+ my $type   = 'localName'; # now implicit in $ns
 
  my $reader = reader_create($schema, "my reader", $type, @opts);
  my $data   = $reader->($xml);  # $xml is string, filename, node
@@ -51,8 +52,8 @@ XML::Compile::Tester - support XML::Compile related regression testing
  my $rerror = reader_error($schema, $type, $xml);
  my $werror = writer_error($schema, $type, $data);
 
- my $output = $templ_xml($schema, $type, @options);
- my $output = $templ_perl($schema, $type, @options);
+ my $output = templ_xml($schema, $type, @options);
+ my $output = templ_perl($schema, $type, @options);
 
 =chapter DESCRIPTION
 
@@ -90,7 +91,9 @@ and with the OPTIONS parameter list.
 =cut
 
 # not using pack_type, which avoids a recursive dependency to XML::Compile
-sub _reltype_to_abs($) { $_[0] =~ m/\{/ ? $_[0] : "{$default_namespace}$_[0]" }
+sub _reltype_to_abs($)
+{   defined $default_namespace && substr($_[0], 0,1) eq '{'
+      ? "{$default_namespace}$_[0]" : $_[0] }
 
 sub reader_create($$$@)
 {   my ($schema, $test, $reltype) = splice @_, 0, 3;
@@ -148,7 +151,7 @@ Create a writer for TYPE.  One test (in the Test::More sense) is created,
 reporting success or failure of the creation.
 
 Of course, M<XML::Compile::Schema::compile()> is being called, with some
-options.  By default, C<check_values> and C<use_default_prefix> are true,
+options.  By default, C<check_values> and C<use_default_namespace> are true,
 and C<include_namespaces> is false.  These values can be overruled using
 M<set_compile_defaults()>, and with the OPTIONS parameter list.
 
@@ -171,10 +174,10 @@ sub writer_create($$$@)
     my $type   = _reltype_to_abs $reltype;
 
     my $write_t = $schema->compile
-     ( WRITER             => $type
-     , check_values       => 1
-     , include_namespaces => 0
-     , use_default_prefix => 1
+     ( WRITER                => $type
+     , check_values          => 1
+     , include_namespaces    => 0
+     , use_default_namespace => 1
      , @compile_defaults
      , @_
      );

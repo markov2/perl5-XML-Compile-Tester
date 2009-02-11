@@ -4,6 +4,21 @@
 Unless noted otherwise, these changes where initiated and applied by
 Mark Overmeer.
 
+version 0.05: Wed Feb 11 11:07:24 CET 2009
+
+	Fixes:
+
+	- do not use /bin/pwd in t/99pod.t
+
+	- use 'use_default_namespace' i.s.o 'use_default_prefix' in
+	  writer.
+
+	- do not complain if default_namespace is not set.
+
+	Improvements:
+
+	- removed superfluous '$' before 'templ*' in SYNOPSIS
+
 version 0.04: Wed Oct  1 22:12:59 CEST 2008
 
 	Fixes:

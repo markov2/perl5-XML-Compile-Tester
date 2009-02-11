@@ -4,7 +4,7 @@ use 5.008;
 
 WriteMakefile
  ( NAME	 	=> 'XML::Compile::Tester'
- , VERSION	=> '0.04'
+ , VERSION	=> '0.05'
  , PREREQ_PM    =>
    { Log::Report     => 0.17
 
