@@ -262,7 +262,7 @@ sub templ_xml($$@)
 
     $schema->template
      ( XML                => $abs
-     , include_namespaces => 0
+     , include_namespaces => 1
      , @opts
      ) . "\n";
 }
