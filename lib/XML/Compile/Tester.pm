@@ -15,6 +15,7 @@ our @EXPORT = qw/
  writer_error
  templ_xml
  templ_perl
+ templ_tree
  compare_xml
  /;
 
@@ -288,6 +289,20 @@ sub templ_perl($$@)
      , @opts
      );
 }
+
+=function templ_perl SCHEMA, TYPE, OPTIONS
+=cut
+
+sub templ_tree($$@)
+{   my ($schema, $test, @opts) = @_;
+    my $abs = _reltype_to_abs($test);
+
+    $schema->template
+     ( TREE               => $abs
+     , @opts
+     );
+}
+
 
 =section Helpers
 

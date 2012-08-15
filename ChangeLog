@@ -4,6 +4,12 @@
 Unless noted otherwise, these changes where initiated and applied by
 Mark Overmeer.
 
+version 0.90: Thu Aug 16 00:06:24 CEST 2012
+
+	Improvements:
+
+	- add templ_tree()
+	
 version 0.06: Tue Jun 15 14:49:28 CEST 2010
 
 	Fixes:
