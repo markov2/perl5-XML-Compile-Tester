@@ -1,9 +1,12 @@
-
-use warnings;
-use strict;
+# This code is part of distribution XML-Compile-Tester.  Meta-POD processed
+# with OODoc into POD and HTML manual-pages.  See README.md
+# Copyright Mark Overmeer.  Licensed under the same terms as Perl itself.
 
 package XML::Compile::Tester;
 use base 'Exporter';
+
+use warnings;
+use strict;
 
 our @EXPORT = qw/
  set_compile_defaults
@@ -66,14 +69,14 @@ which simplify writing tests for XML::Compile related distributions.
 
 =section Reader checks
 
-=function reader_create SCHEMA, COMMENT, TYPE, OPTIONS
-Create a reader for TYPE.  One test is created, reporting
+=function reader_create $schema, $comment, $type, %options
+Create a reader for $type.  One test is created, reporting
 success or failure of the creation.
 
 Of course, M<XML::Compile::Schema::compile()> is being called, with some
 options.  By default, C<check_values> is true, and C<include_namespaces>
 is false.  These values can be overruled using M<set_compile_defaults()>,
-and with the OPTIONS parameter list.
+and with the %options parameter list.
 
 =example reader_create
  my $type   = pack_type('namespace', 'localName');
@@ -113,8 +116,8 @@ sub reader_create($$$@)
 }
 *create_reader = \&reader_create;  # name change in 0.03
 
-=function reader_error SCHEMA, TYPE, XML
-Parsing the XML to interpret the TYPE should return an error.  The
+=function reader_error $schema, $type, $xml
+Parsing the $xml to interpret the $type should return an error.  The
 error text is returned.
 
 =example reader_error
@@ -147,14 +150,14 @@ sub reader_error($$$)
 
 =section Writer checks
 
-=function writer_create SCHEMA, COMMENT, TYPE, OPTIONS
-Create a writer for TYPE.  One test (in the Test::More sense) is created,
+=function writer_create $schema, $comment, $type, %options
+Create a writer for $type.  One test (in the Test::More sense) is created,
 reporting success or failure of the creation.
 
 Of course, M<XML::Compile::Schema::compile()> is being called, with some
 options.  By default, C<check_values> and C<use_default_namespace> are true,
 and C<include_namespaces> is false.  These values can be overruled using
-M<set_compile_defaults()>, and with the OPTIONS parameter list.
+M<set_compile_defaults()>, and with the %options parameter list.
 
 =example writer_create
  set_default_namespace('namespace');
@@ -188,9 +191,9 @@ sub writer_create($$$@)
 }
 *create_writer = \&writer_create;  # name change in 0.03
 
-=function writer_test WRITER, DATA, [DOC]
-Run the test with a compiled WRITER, which was created with M<writer_create()>.
-When no DOC (M<XML::LibXML::Document> object) was specified, then one will
+=function writer_test $writer, $data, [$doc]
+Run the test with a compiled $writer, which was created with M<writer_create()>.
+When no $doc (M<XML::LibXML::Document> object) was specified, then one will
 be created for you.
 
 =cut
@@ -209,8 +212,8 @@ sub writer_test($$;$)
     $tree;
 }
 
-=function writer_error SCHEMA, TYPE, DATA
-Translating the Perl DATA into the XML type should return a validation
+=function writer_error $schema, $type, $data
+Translating the Perl $data into the XML type should return a validation
 error, which is returned.
 
 =example writer_error
@@ -233,7 +236,7 @@ sub writer_error($$$)
 
     my $error
        = ref $@ && $@->exceptions
-       ? join("\n", map {$_->message} $@->exceptions)
+       ? join("\n", map $_->message, $@->exceptions)
        : '';
     undef $node if $error;   # there is output if only warnings are produced
 
@@ -245,11 +248,12 @@ sub writer_error($$$)
     $error;
 }
 
+#--------------
 =section Check templates
 
-=function templ_xml SCHEMA, TYPE, OPTIONS
-Create an example template for TYPE, as XML message.
-The OPTIONS are passed to M<XML::Compile::Schema::template()>.
+=function templ_xml $schema, $type, %options
+Create an example template for $type, as XML message.
+The %options are passed to M<XML::Compile::Schema::template()>.
 
 =example templ_xml
  my $out = templ_xml($schema, $type, show => 'ALL');
@@ -268,9 +272,9 @@ sub templ_xml($$@)
      ) . "\n";
 }
 
-=function templ_perl SCHEMA, TYPE, OPTIONS
-Create an example template for TYPE, as Perl data
-structure (like Data::Dumper) The OPTIONS are passed to
+=function templ_perl $schema, $type, %options
+Create an example template for $type, as Perl data
+structure (like Data::Dumper) The %options are passed to
 M<XML::Compile::Schema::template()>.
 
 =example templ_perl
@@ -290,7 +294,7 @@ sub templ_perl($$@)
      );
 }
 
-=function templ_perl SCHEMA, TYPE, OPTIONS
+=function templ_perl $schema, $type, %options
 =cut
 
 sub templ_tree($$@)
@@ -306,9 +310,9 @@ sub templ_tree($$@)
 
 =section Helpers
 
-=function set_compile_defaults OPTIONS
+=function set_compile_defaults %options
 Each call to create a reader or writer (also indirectly) with
-M<XML::Compile::Schema::compile()> will get these OPTIONS passed, on top
+M<XML::Compile::Schema::compile()> will get these %options passed, on top
 (and overruling) the usual settings.
 
 =example
@@ -321,16 +325,16 @@ M<XML::Compile::Schema::compile()> will get these OPTIONS passed, on top
 
 sub set_compile_defaults(@) { @compile_defaults = @_ }
 
-=function set_default_namespace TESTNS
+=function set_default_namespace $testns
 Defined which namespace to use when a relative (only localName) type
 is provided.  By default, this is C<undef> (an error when used)
 =cut
 
 sub set_default_namespace($) { $default_namespace = shift }
 
-=function compare_xml XML, EXPECTED, [COMMENT]
-Compare the XML (either a string or an M<XML::LibXML::Element>) with
-the EXPECTED string.  Both sources are stripped from layout before
+=function compare_xml $created, $expected, [$comment]
+Compare the $created XML (either a string or an M<XML::LibXML::Element>)
+with the $expected string.  Both sources are stripped from layout before
 comparing.
 
 In a future release, this algorithm will get improved to compare
